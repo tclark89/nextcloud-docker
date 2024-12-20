@@ -25,7 +25,9 @@ services:
     ports:
       - 9001:80
     volumes:
-      - /mnt/RAID/nextcloud/html:/var/www/html/
+      #- /mnt/RAID/nextcloud/html:/var/www/html/
+      - ./html:/var/www/html/
+      - /mnt/RAID/nextcloud/html/data:/var/www/html/data
     environment:
       - MYSQL_HOST=db
     env_file:
