@@ -25,7 +25,6 @@ services:
     ports:
       - 9001:80
     volumes:
-      #- /mnt/RAID/nextcloud/html:/var/www/html/
       - ./html:/var/www/html/
       - ./data:/var/www/html/data
     environment:
