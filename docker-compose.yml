@@ -1,7 +1,4 @@
 # Nextcloud Apache with Mariadb
-volumes:
-  nextcloud:
-  db:
 
 services:
   db:
@@ -9,9 +6,10 @@ services:
     container_name: nextcloud-mariadb
     restart: unless-stopped
     command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    user: 1000:1000
     volumes:
       #- db:/var/lib/mysql
-      - ./db:/var/lib/mysql
+      - db:/var/lib/mysql
     env_file:
       - .env
     networks:
@@ -21,13 +19,18 @@ services:
     container_name: nextcloud-app
     image: nextcloud:stable
     restart: unless-stopped
+    user: 1000:1000
     depends_on: 
       - db
     ports:
-      - 9001:80
+      - 80:80
+      - 443:443
+      - 3478:3478
+      - 8080:8080
+      - 8443:8443
     volumes:
-      - ./html:/var/www/html/
-      - ./data:/var/www/html/data
+      - html:/var/www/html/
+      - data:/var/www/html/data
     environment:
       - MYSQL_HOST=db
     env_file:
@@ -39,3 +42,24 @@ networks:
   nextcloud:
     external: true
     name: nextcloud
+
+
+volumes:
+  db:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=fileserver.localdomain.lan,rw,vers=4.1,async
+      device: ":/srv/docker/nextcloud/db"
+  html:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=fileserver.localdomain.lan,rw,vers=4.1,async
+      device: ":/srv/docker/nextcloud/html"
+  data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=fileserver.localdomain.lan,rw,vers=4.1,async
+      device: ":/srv/docker/nextcloud/data"
