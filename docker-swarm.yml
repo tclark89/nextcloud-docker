@@ -42,17 +42,17 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      o: addr=fileserver.localdomain.lan,rw,vers=4.1,async
+      o: addr=fileserver.tyler-clark.com,rw,vers=4.1,async
       device: ":/srv/docker/nextcloud/db"
   html:
     driver: local
     driver_opts:
       type: nfs
-      o: addr=fileserver.localdomain.lan,rw,vers=4.1,async
+      o: addr=fileserver.tyler-clark.com,rw,vers=4.1,async
       device: ":/srv/docker/nextcloud/html"
   data:
     driver: local
     driver_opts:
       type: nfs
-      o: addr=fileserver.localdomain.lan,rw,vers=4.1,async
+      o: addr=fileserver.tyler-clark.com,rw,vers=4.1,async
       device: ":/srv/docker/nextcloud/data"
