@@ -6,7 +6,7 @@ services:
     command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
     user: 1000:1000
     volumes:
-      - db:/var/lib/mysql
+      - ./db:/var/lib/mysql
     env_file:
       - .env
     networks:
@@ -15,15 +15,15 @@ services:
   app:
     image: nextcloud:stable
     user: 1000:1000
-    ports:
-      - 80:80
-      - 443:443
-      - 3478:3478
-      - 8080:8080
-      - 8443:8443
+      #ports:
+      #- 80:80
+      #- 443:443
+      #- 3478:3478
+      #- 8080:8080
+      #- 8443:8443
     volumes:
-      - html:/var/www/html/
-      - data:/var/www/html/data
+      - ./html:/var/www/html/
+      - ./data:/var/www/html/data
     environment:
       - MYSQL_HOST=db
     env_file:
@@ -35,24 +35,6 @@ networks:
   nextcloud:
     driver: overlay
     name: nextcloud
+    attachable: true
 
 
-volumes:
-  db:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=fileserver.tyler-clark.com,rw,vers=4.1,async
-      device: ":/srv/docker/nextcloud/db"
-  html:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=fileserver.tyler-clark.com,rw,vers=4.1,async
-      device: ":/srv/docker/nextcloud/html"
-  data:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=fileserver.tyler-clark.com,rw,vers=4.1,async
-      device: ":/srv/docker/nextcloud/data"
