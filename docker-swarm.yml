@@ -4,7 +4,7 @@ services:
   db:
     image: mariadb:lts
     command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
-    user: 1000:1000
+      #user: 1000:1000
     volumes:
       - db:/var/lib/mysql
     env_file:
@@ -14,7 +14,7 @@ services:
 
   app:
     image: nextcloud:stable
-    user: 1000:1000
+      #user: 1000:1000
       #ports:
       #- 80:80
       #- 443:443
